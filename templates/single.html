@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Макроэкономика, тренды, новости со всего мира</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel="stylesheet" href="/static/sheet.css">
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .panel-radios {
+            display: none;
+        }
+
+        td img {
+            width: 23px;
+            margin-right: 4px;
+        }
+    </style>
+</head>
+<body>
+<input id="panel-3-ctrl" class="panel-radios" type="radio" name="tab-radios" checked>
+<input id="nav-ctrl" class="panel-radios" type="checkbox" name="nav-checkbox">
+<header id="introduction">
+    <h1>Новости со всего мира</h1>
+</header>
+<!-- TABS LIST -->
+<ul id="tabs-list">
+    <!-- MENU TOGGLE -->
+    <label id="open-nav-label" for="nav-ctrl"></label>
+    <li id="li-for-panel-3">
+        <label class="panel-label" for="panel-3-ctrl">Аналитика стран G20</label>
+    </li>
+    <label id="close-nav-label" for="nav-ctrl">Close</label>
+</ul>
+<!-- THE PANELS -->
+<section id="panels">
+    <div class="container">
+        <section id="panel-3">
+            <main>
+                <a href="/news">Назад к выбору стран</a>
+                <h1>{{ country_name.1 }}</h1>
+                <div class="ritz grid-container" dir="ltr">
+                    <table class="waffle" cellspacing="0" cellpadding="0">
+                        <thead>
+                        <tr>
+                            <th class="row-header freezebar-origin-ltr"></th>
+                            <th id="0C0" style="width:250px;" class="column-headers-background">A</th>
+                            <th id="0C1" style="width:142px;" class="column-headers-background">B</th>
+                            <th id="0C2" style="width:55px;" class="column-headers-background">C</th>
+                            <th id="0C3" style="width:153px;" class="column-headers-background">D</th>
+                            <th id="0C4" style="width:153px;" class="column-headers-background">E</th>
+                            <th id="0C5" style="width:143px;" class="column-headers-background">F</th>
+                            <th id="0C6" style="width:143px;" class="column-headers-background">G</th>
+                            <th id="0C7" style="width:143px;" class="column-headers-background">H</th>
+                            <th id="0C8" style="width:143px;" class="column-headers-background">I</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr style="height: 20px">
+                            <th id="0R0" style="height: 20px;" class="row-headers-background">
+                                <div class="row-header-wrapper" style="line-height: 20px">1</div>
+                            </th>
+                            <td class="s0"></td>
+                            <td class="s0" dir="ltr">Прогноз</td>
+                            <td class="s1" dir="ltr">Сейчас</td>
+                            <td class="s0" dir="ltr">Прежнее значение 1</td>
+                            <td class="s0" dir="ltr">Прежнее значение 2</td>
+                            <td class="s0" dir="ltr">Прежнее значение 3</td>
+                            <td class="s0" dir="ltr">Прежнее значение 4</td>
+                            <td class="s0" dir="ltr">Прежнее значение 5</td>
+                            <td class="s0" dir="ltr">Прежнее значение 6</td>
+                        </tr>
+                        {% for indicator in indicators %}
+                            <tr style="height: 20px">
+                                <th id="0R1" style="height: 20px;" class="row-headers-background">
+                                    <div class="row-header-wrapper" style="line-height: 20px">{{ loop.index + 1 }}</div>
+                                </th>
+                                <td class="s0" dir="ltr">{{ indicator }}</td>
+                                <td>{{ forecasts.get(indicator,[]).1 }}</td>
+                                <td class="s2">{{ indicators[indicator] }}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        {% endfor %}
+                        <tr style="height: 20px">
+                            <th id="0R119" style="height: 20px;" class="row-headers-background">
+                                <div class="row-header-wrapper" style="line-height: 20px">1</div>
+                            </th>
+                            <td class="s0" dir="ltr">Предсказывают:</td>
+                            <td class="s0" dir="ltr">Ближайший прогноз</td>
+                            <td class="s1" dir="ltr">Сейчас</td>
+                            <td class="s0" dir="ltr">Ближайший прогноз 1</td>
+                            <td class="s0" dir="ltr">Ближайший прогноз 2</td>
+                            <td class="s6" dir="ltr">Ближайший прогноз 3</td>
+                            <td class="s6" dir="ltr">Ближайший прогноз 4</td>
+                            <td class="s6" dir="ltr">Ближайший прогноз 5</td>
+                            <td class="s6" dir="ltr">Ближайший прогноз 6</td>
+                        </tr>
+                        {% for forecast in forecasts %}
+                            <tr style="height: 20px">
+                                <th id="0R121" style="height: 20px;" class="row-headers-background">
+                                    <div class="row-header-wrapper" style="line-height: 20px">{{ loop.index + 1 }}</div>
+                                </th>
+                                <td class="s0" dir="ltr">{{ forecast }}</td>
+                                <td>{{ forecasts[forecast].1 }}</td>
+                                <td class="s2">{{ forecasts[forecast].0 }}</td>
+                                <td>{{ forecasts[forecast].2 }}</td>
+                                <td>{{ forecasts[forecast].3 }}</td>
+                                <td>{{ forecasts[forecast].4 }}</td>
+                                <td>{{ forecasts[forecast].5 }}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        {% endfor %}
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </section>
+    </div>
+</section>
+
+<script>
+    (function (w, d) {
+
+        var items = d.querySelectorAll('[data-filter]');
+        for (var i = 0; i < items.length; i++) {
+            items[i].addEventListener('click', filterClick);
+        }
+
+        function filterClick(e) {
+            var button = e.target;
+            resetFilter();
+            if (button.getAttribute('data-filter') === 'reset') {
+                window.scrollTo(0, 0);
+                return;
+            }
+            filterTag(button.getAttribute('data-filter'));
+            window.scrollTo(0, 200);
+        }
+
+        function filterTag(tag) {
+            var items = d.querySelectorAll('[data-tags]'),
+                itemTags;
+
+            for (var i = 0; i < items.length; i++) {
+                itemTags = items[i].getAttribute('data-tags');
+                if (itemTags != null) {
+                    if (itemTags.indexOf(tag) < 0) {
+                        items[i].setAttribute('data-toggle', 'off');
+                    }
+                }
+            }
+        }
+
+        function resetFilter() {
+            var items = d.querySelectorAll('[data-tags]');
+            for (var i = 0; i < items.length; i++) {
+                items[i].setAttribute('data-toggle', 'on');
+            }
+        }
+    })(window, document);
+</script>
+<!-- partial -->
+</body>
+</html>

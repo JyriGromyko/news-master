@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Макроэкономика, тренды, новости со всего мира</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link href="/static/sheet.css" rel="stylesheet">
+    <link href="/static/style.css" rel="stylesheet">
+    <style>
+        .panel-radios {
+            display: none;
+        }
+
+        td img {
+            width: 23px;
+            margin-right: 4px;
+        }
+    </style>
+    <script src="https://cdn.plot.ly/plotly-2.14.0.min.js"></script>
+</head>
+<body>
+<input id="panel-1-ctrl" class="panel-radios" type="radio" name="tab-radios" checked>
+<input id="panel-2-ctrl" class="panel-radios" type="radio" name="tab-radios">
+<input id="panel-3-ctrl" class="panel-radios" type="radio" name="tab-radios">
+<input id="nav-ctrl" class="panel-radios" type="checkbox" name="nav-checkbox">
+<header id="introduction">
+    <h1>Новости со всего мира</h1>
+</header>
+<!-- TABS LIST -->
+<ul id="tabs-list">
+    <!-- MENU TOGGLE -->
+    <label id="open-nav-label" for="nav-ctrl"></label>
+    <li id="li-for-panel-1">
+        <label class="panel-label" for="panel-1-ctrl">Мировые новости</label>
+    </li>
+    <!--INLINE-BLOCK FIX
+-->
+    <li id="li-for-panel-2">
+        <label class="panel-label" for="panel-2-ctrl">Макроэкономические новости</label>
+    </li>
+    <!--INLINE-BLOCK FIX
+-->
+    <li id="li-for-panel-3">
+        <label class="panel-label" for="panel-3-ctrl">Аналитика стран G20</label>
+    </li>
+    <label id="close-nav-label" for="nav-ctrl">Close</label>
+</ul>
+<!-- THE PANELS -->
+<section id="panels">
+    <div class="container">
+        <section id="panel-1">
+            <h1>Мировые новости</h1>
+            <div class="ritz grid-container" dir="ltr">
+                <table class="waffle">
+                    <thead>
+                    <tr>
+                        <th class="row-header freezebar-origin-ltr"></th>
+                        <th id="0C1" style="width:70px;" class="column-headers-background">A</th>
+                        <th id="0C2" style="width:105px;" class="column-headers-background">B</th>
+                        <th id="0C3" style="width:588px;" class="column-headers-background">C</th>
+                        <th id="0C4" style="width:554px;" class="column-headers-background">D</th>
+                        <th id="0C5" style="width:58px;" class="column-headers-background">E</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr style="height: 20px">
+                        <th id="0R0" style="height: 20px;" class="row-headers-background">
+                            <div class="row-header-wrapper" style="line-height: 20px">1</div>
+                        </th>
+                        <td class="s0" dir="ltr">Дата</td>
+                        <td class="s0" dir="ltr">Ссылка на новость</td>
+                        <td class="s0" dir="ltr">Заголовок</td>
+                        <td class="s0" dir="ltr">Краткое описание</td>
+                        <td class="s0" dir="ltr">Страна</td>
+                    </tr>
+                    {% for entry in worldentries %}
+                        <tr style="height: 20px">
+                            <th id="0R1" style="height: 20px;" class="row-headers-background">
+                                <div class="row-header-wrapper" style="line-height: 20px">{{ loop.index  + 1 }}</div>
+                            </th>
+                            <td class="s2" dir="ltr">{{ entry.published }}</td>
+                            <td class="s3" dir="ltr">
+                                <a target="_blank" href="{{ entry.extralink }}">{{ entry.extralink }}</a>
+                            </td>
+                            <td class="s4" dir="ltr">{{ entry.title }}</td>
+                            <td class="s5" dir="ltr">{{ entry.description }}
+                            </td>
+                            <td class="s5" dir="ltr">
+                                <img src="{{ entry.country_image }}"
+                                     alt="">
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="news__tags">
+                <ul>
+                    <!-- MENU TOGGLE -->
+                    <a {% if page >= 2 %}
+                        disabled="disabled"
+                    {% endif %}  class="panel-label" href="?page={{ page }}">Предыдущая страница
+                    </a>
+                    <!--INLINE-BLOCK FIX
+                -->
+                    <a class="panel-label" href="?page={{ page + 2 }}">Следующая страница</a>
+                </ul>
+            </div>
+        </section>
+        <section id="panel-2">
+            <main>
+                <h1>Макроэкономические новости</h1>
+                <div class="news__tags">
+                    <ul>
+                        <button data-filter="reset">All</button>
+                        <button data-filter="bonds">Bonds</button>
+                        <button data-filter="commodities">Commodities</button>
+                        <button data-filter="crypto">Crypto</button>
+                        <button data-filter="equities">Equities</button>
+                        <button data-filter="forex">Forex</button>
+                        <button data-filter="indexes">Indexes</button>
+                        <button data-filter="macro">Macro</button>
+                        <button data-filter="risk">Risk</button>
+                    </ul>
+                </div>
+                <div class="news__items">
+                    {% for entry in macroentries %}
+
+                        <article class="news__item" data-tags="{{ ' '.join(entry.streamids) }}">
+                            <h3 class="news__item_headline"><a
+                                    href="{{ entry.link }}">{{ entry.title }}</a></h3>
+                            <p class="news__card_desc">{{ entry.description }}</p>
+                            {% if 'imageURL' in entry %}
+                                <img src="{{ entry.imageURL }}" alt="">
+                            {% endif %}
+
+                            <div class="news__item_meta">
+                                <div class="news__item_tags">
+                                    {% for tag in entry.categories %}
+                                        <span class="news__item_tag">{{ tag }}</span>
+                                    {% endfor %}
+                                </div>
+                                <span class="news__item_time">{{ entry.published }}</span>
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+
+            </main>
+        </section>
+        <section id="panel-3">
+            <main>
+                <h1>Аналитика стран G20</h1>
+                <div id="countries">
+                    {% for country, name in countries %}
+
+                        <a class="countries__item" href="/news/{{ country }}"
+                           style="background-image: url('{{ country_flags[country] }}'); background-size: cover;">
+                            <h2>{{ name }}</h2>
+                        </a>                    {% endfor %}
+                    </a>
+                </div>
+                <div id="countries__stats" data-indicators="{{ indicators | join(',') }}">
+                    {% for indicator in indicators %}
+                        <div class="countries__stats_item">
+                            <h3>{{ indicator }}</h3>
+                            <p style="color: #fff;background: #000;">
+                            <div style="width:100%" id="{{ indicator | replace(' ', '_') }}_plotly"
+                                 data-x="{{ countries_data.keys() | join(',') }}"
+                                 data-y="{{ indicators[indicator] | join(',') }}">
+                            </div>
+                            </p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </main>
+
+        </section>
+    </div>
+</section>
+
+<script>
+    (function (w, d) {
+
+        var items = d.querySelectorAll('[data-filter]');
+        for (var i = 0; i < items.length; i++) {
+            items[i].addEventListener('click', filterClick);
+        }
+
+        function filterClick(e) {
+            var button = e.target;
+            resetFilter();
+            if (button.getAttribute('data-filter') === 'reset') {
+                window.scrollTo(0, 0);
+                return;
+            }
+            filterTag(button.getAttribute('data-filter'));
+            window.scrollTo(0, 200);
+        }
+
+        function filterTag(tag) {
+            var items = d.querySelectorAll('[data-tags]'),
+                itemTags;
+
+            for (var i = 0; i < items.length; i++) {
+                itemTags = items[i].getAttribute('data-tags');
+                if (itemTags != null) {
+                    if (itemTags.indexOf(tag) < 0) {
+                        items[i].setAttribute('data-toggle', 'off');
+                    }
+                }
+            }
+        }
+
+        function resetFilter() {
+            var items = d.querySelectorAll('[data-tags]');
+            for (var i = 0; i < items.length; i++) {
+                items[i].setAttribute('data-toggle', 'on');
+            }
+        }
+
+        let indicators_list = document.querySelector('#countries__stats').dataset.indicators.split(',');
+        for (const indicator of indicators_list) {
+
+            let div = document.querySelector(`#${indicator.replaceAll(' ', '_')}_plotly`);
+
+            let data = [{
+                x: div.dataset.x.split(','),
+                y: div.dataset.y.split(','),
+                type: 'bar'
+            }];
+            Plotly.newPlot(div, data);
+        }
+
+
+    })(window, document);
+</script>
+<!-- partial -->
+</body>
+</html>
